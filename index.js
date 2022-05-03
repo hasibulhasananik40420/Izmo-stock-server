@@ -23,9 +23,9 @@ async function run() {
         const inventoryCollection = client.db("Inventorycollecttion").collection("Inventory");
 
          //post api
-        app.post('/additem' , async(req,res)=>{
-          const item = req.body 
-          const result = await inventoryCollection.insertOne(item);
+        app.post('/inventory' , async(req,res)=>{
+          const newItem = req.body 
+          const result = await inventoryCollection.insertOne(newItem);
             res.send(result)
 
         })
@@ -47,6 +47,9 @@ async function run() {
           const result = await inventoryCollection.findOne(query)
           res.send(result)
       })
+
+       
+
 
         console.log('db connected yes')
     }
