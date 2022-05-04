@@ -57,6 +57,8 @@ async function run() {
           res.send(result)
         })
 
+        //put data 
+        
 
         console.log('db connected yes')
     }
