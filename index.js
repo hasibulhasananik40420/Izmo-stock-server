@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 app.use(cors())
 app.use(express.json())
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 require('dotenv').config()
 
@@ -22,6 +22,17 @@ async function run() {
         await client.connect()
         const inventoryCollection = client.db("Inventorycollecttion").collection("Inventory");
 
+
+        app.post('/token', async(req,res)=>{
+          const email = req.body 
+          console.log(email);
+          //1.28 mit
+          // const token = jwt.sign(email, 'shhhhh');
+          // const token = jwt.sign(email, process.env.ACCESS_TOKEN);
+          // res.send({token})
+        })
+
+
          //post api
         app.post('/inventory' , async(req,res)=>{
           const newItem = req.body 
@@ -38,6 +49,16 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+
+         //my item
+//   http://localhost:5000/myitems
+         app.get('/myitems', async (req, res) => {
+          const email = req.query.email
+          const query = { email: email };
+          const cursor = inventoryCollection.find(query);
+          const result = await cursor.toArray()
+          res.send(result)
+      })
 
 
         //single id
@@ -71,6 +92,14 @@ async function run() {
           res.send(result)
 
       })
+
+      //jwt
+        // app.post('/login' , async(req,res)=>{
+        //   const email = req.body 
+        //   console.log(email);
+        //   //1.25
+
+        // })
 
         console.log('db connected yes')
     }
