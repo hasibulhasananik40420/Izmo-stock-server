@@ -23,14 +23,14 @@ async function run() {
         const inventoryCollection = client.db("Inventorycollecttion").collection("Inventory");
 
 
-        app.post('/token', async(req,res)=>{
-          const email = req.body 
-          console.log(email);
-          //1.28 mit
-          // const token = jwt.sign(email, 'shhhhh');
-          // const token = jwt.sign(email, process.env.ACCESS_TOKEN);
-          // res.send({token})
-        })
+        // app.post('/token', async(req,res)=>{
+        //   const email = req.body 
+        //   console.log(email);
+        //   1.28 mit
+        //   const token = jwt.sign(email, 'shhhhh');
+        //   const token = jwt.sign(email, process.env.ACCESS_TOKEN);
+        //   res.send({token})
+        // })
 
 
          //post api
@@ -51,10 +51,11 @@ async function run() {
         })
 
          //my item
-//   http://localhost:5000/myitems
-         app.get('/myitems', async (req, res) => {
+        //   http://localhost:5000/myitems
+          app.get('/myitems', async (req, res) => {
           const email = req.query.email
           const query = { email: email };
+          // console.log(email);
           const cursor = inventoryCollection.find(query);
           const result = await cursor.toArray()
           res.send(result)
@@ -92,14 +93,6 @@ async function run() {
           res.send(result)
 
       })
-
-      //jwt
-        // app.post('/login' , async(req,res)=>{
-        //   const email = req.body 
-        //   console.log(email);
-        //   //1.25
-
-        // })
 
         console.log('db connected yes')
     }
