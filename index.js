@@ -15,7 +15,20 @@ const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@clu
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
   
     
-
+const verifyJWT = (req, res, next) =>{
+  const authHeader = req.headers.authorization;
+  if(!authHeader){
+      return res.status(401).send({message: 'unauthorized'});
+  }
+  const token = authHeader.split(' ')[1];
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) =>{
+      if(err){
+          return res.status(403).send({message: 'forbidden'})
+      }
+      req.decoded= decoded;
+      next();
+  })
+}
 
 async function run() {
     try {
@@ -23,14 +36,34 @@ async function run() {
         const inventoryCollection = client.db("Inventorycollecttion").collection("Inventory");
 
 
-        // app.post('/token', async(req,res)=>{
-        //   const email = req.body 
-        //   console.log(email);
-        //   1.28 mit
-        //   const token = jwt.sign(email, 'shhhhh');
-        //   const token = jwt.sign(email, process.env.ACCESS_TOKEN);
-        //   res.send({token})
-        // })
+        app.post('/token', async(req,res)=>{
+          // const email = req.body 
+          // //1.40min
+          // // console.log(email);
+          // const token = jwt.sign(email, process.env.USER_TOKEN);
+          // //  console.log(token);
+          // res.send({token})
+
+
+          const email = req.body;
+          console.log(email);
+          // DANGER: Do not check password here for serious application
+          // USE proper process for hashing and checking
+          // After completing all authentication related verification, issue JWT token
+          if(email){
+              const accessToken = jwt.sign({
+                  email:email}, 
+                  process.env.USER_TOKEN, 
+                  {expiresIn: '1h'})
+              res.send({
+                  success: true,
+                  accessToken: accessToken
+              })
+          }
+          else{
+              res.status(401).send({success: false});
+          }
+        })
 
 
          //post api
