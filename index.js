@@ -21,7 +21,7 @@ const verifyJWT = (req, res, next) =>{
       return res.status(401).send({message: 'unauthorized'});
   }
   const token = authHeader.split(' ')[1];
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) =>{
+  jwt.verify(token, process.env.USER_TOKEN, (err, decoded) =>{
       if(err){
           return res.status(403).send({message: 'forbidden'})
       }
@@ -47,9 +47,6 @@ async function run() {
 
           const email = req.body;
           console.log(email);
-          // DANGER: Do not check password here for serious application
-          // USE proper process for hashing and checking
-          // After completing all authentication related verification, issue JWT token
           if(email){
               const accessToken = jwt.sign({
                   email:email}, 
