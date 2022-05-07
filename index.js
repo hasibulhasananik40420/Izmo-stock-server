@@ -49,7 +49,7 @@ async function run() {
           console.log(email);
           if(email){
               const accessToken = jwt.sign({
-                  email:email}, 
+                  email}, 
                   process.env.USER_TOKEN, 
                   {expiresIn: '1h'})
               res.send({
