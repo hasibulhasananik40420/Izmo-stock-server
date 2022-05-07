@@ -36,7 +36,7 @@ async function run() {
         const inventoryCollection = client.db("Inventorycollecttion").collection("Inventory");
 
 
-        app.post('/token',verifyJWT, async(req,res)=>{
+        app.post('/token', async(req,res)=>{
           // const email = req.body 
           // //1.40min
           // // console.log(email);
@@ -82,7 +82,7 @@ async function run() {
 
          //my item
         //   http://localhost:5000/myitems
-          app.get('/myitems', async (req, res) => {
+          app.get('/myitems',verifyJWT, async (req, res) => {
           const email = req.query.email
           const query = { email: email };
           // console.log(email);
