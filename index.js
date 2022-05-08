@@ -37,14 +37,6 @@ async function run() {
 
 
         app.post('/token', async(req,res)=>{
-          // const email = req.body 
-          // //1.40min
-          // // console.log(email);
-          // const token = jwt.sign(email, process.env.USER_TOKEN);
-          // //  console.log(token);
-          // res.send({token})
-
-
           const email = req.body;
           console.log(email);
           if(email){
